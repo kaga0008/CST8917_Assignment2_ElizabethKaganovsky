@@ -61,13 +61,21 @@ To note is that AWS Step Functions deos not provide the same user-friendly inter
 | Strengths  | Massive family of connectors                                                                                   | Strong native AWS integration                                                    | Friendly to non-developers (low/no-code) | Strong integration with Google services |
 | Weaknesses | Additional fees for certain connectors [azconnfee], high lock in due to lack of support for other connectors in other CSPs | Requires knowledge of JSON/Proprietary ASL, limited usability for non-developers | Limited non-Google ecosystem connectors  | Limited non-Google ecosystem connectors |
 
-
-
 ### Service Bus
-- Azure Service Bus
-- AWS SQS
-- AWS SNS
-- GCP Cloud Pub/Sub
+Similar to the above scenarios, some CSPs do not provide perfect matches. AWS requires Simple Queueing Service for message queueing and Simple Notification Service for pub/sub behaviour.
+
+|                     | Azure Service Bus                                   | AWS SQS + SNS                                                   | GCP Cloud Pub/Sub                                     |
+|---------------------|-----------------------------------------------------|-----------------------------------------------------------------|-------------------------------------------------------|
+| Messaging Model     | Enterprise Message Broker (Queues & Pub/Sub Topics) | Message Queue (Point-to-point, for fan-out use SNS) [snspubsub] | Global Pub/Sub (Topic-Subscription model) [snspubsub] |
+| Max Payload         | 1 MB (Standard/Premium)                             | 256 KB (up to 2GB with S3 SDK) [snspubsub]                      | 10 MB [snspubsub]                                     |
+| Protocols           | AMQP 1.0, HTTP/REST                                 | HTTP/REST [snspubsub]                                           | gRPC, HTTP/REST [snspubsub]                           |
+| Delivery Guarantees | At least once (Exactly once with Sessions)          | At least once (Standard), exactly once (FIFO) [snspubsub]       | At least once [snspubsub]                             |
+| Monitoring          | Azure Monitor                                       | CloudWatch                                                      | Cloud Monitor                                         |
+
+|            | Azure Service Bus             | AWS SQS + SNS                                       | GCP Cloud Pub/Sub                                          |
+|------------|-------------------------------|-----------------------------------------------------|------------------------------------------------------------|
+| Strengths  | Strong enterprise integration | Simple setup, low management overhead               | Strong integration with BigQuery and Google Cloud Dataflow |
+| Weaknesses | Strong Azure lock-in          | Two services required for a full suite of features  | Tightly coupled to GCP ecosystem                           |
 
 ### Event Grid
 - Azure Event Grid
@@ -95,6 +103,7 @@ To note is that AWS Step Functions deos not provide the same user-friendly inter
 [awsdurfunc] https://docs.aws.amazon.com/lambda/latest/dg/durable-step-functions.html 
 [awsdurexsdk] https://docs.aws.amazon.com/lambda/latest/dg/durable-execution-sdk.html
 [gcpspan] https://cloud.google.com/run 
+[snspubsub] https://ably.com/compare/amazon-sns-vs-google-pub-sub
 
 Other
 https://multishoring.com/blog/azure-logic-apps-vs-aws-step-functions-which-fits-your-integration-needs/
